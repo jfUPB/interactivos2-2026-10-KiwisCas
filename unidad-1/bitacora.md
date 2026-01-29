@@ -170,3 +170,9 @@ Estos ajustes ayudan a que el sonido no sea completamente rígido y aportan una 
 ## Bitácora de reflexión
 
 
+### Diagrama Funcionamiento de caso de Estudio
+
+<img width="924" height="678" alt="image" src="https://github.com/user-attachments/assets/e019b719-2bfe-4591-9551-59e3ed4036dd" />
+
+
+
