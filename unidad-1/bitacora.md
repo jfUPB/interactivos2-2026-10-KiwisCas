@@ -53,8 +53,120 @@ stack(
 
 ### Sobre la explicación del código
 
-La base que utilizo utiliza samples de la biblioteca `github:eddyflux/crate` que es donde se van a tomar las bases para la biblioteca de sonidos de la batería.
-Luego de esto me encargo 
+#### Configuración inicial
+
+Para comenzar, cargué un banco de sonidos externo que contiene principalmente samples de percusión:
+
+```js
+samples('github:eddyflux/crate')
+```
+Este banco fue utilizado como base para los sonidos rítmicos de la pieza.
+
+Luego definí la velocidad general del sistema:
+
+```js
+setcps(.75)
+```
+Esto controla el tempo global. Al usar un valor menor a 1, la pieza tiene un ritmo más lento y permite apreciar mejor las capas que se van sumando.
+
+
+#### Definición de acordes
+A continuación, definí una progresión de acordes que funciona como base armónica de la composición:
+
+```js
+let chords = chord("<C#2 Gb>/4").dict('ireal')
+```
+Estos acordes se reutilizan en diferentes partes del código, como el bajo y los elementos melódicos, lo que ayuda a mantener coherencia musical en toda la pieza.
+
+#### Construcción de la base rítmica
+La sección rítmica se construye usando varios patrones que se ejecutan al mismo tiempo:
+
+```js
+stack(
+  stack( 
+    s("bd").struct("<[x*<2 2> [~@3 x]] x>"),
+    s("~ [rim, sd:<2 3>]").room("<0 .2>"),
+    n("[0 <1 3>]*<2!3 4>").s("hh"),
+    n("[0 <1 2>]*<1!3 4>").s("lt").hpf(slider(723, 0, 1000)),
+    s("rd:<1!3 2>*2").mask("<1 1 1 1>/16").gain(.5)
+  ).bank('crate')
+)
+```
+El bombo (bd) marca el pulso principal, pero con variaciones y silencios.
+
+La caja y el rim complementan el ritmo y añaden textura.
+
+Los hi-hats (hh) y toms (lt) aportan detalles rítmicos.
+
+En los toms se utiliza un filtro controlado por un slider, lo que permite modificar el sonido en tiempo real.
+
+Algunos sonidos solo se activan en ciertos momentos gracias a las máscaras rítmicas.
+
+#### Máscaras y visualización
+Para controlar cuándo suenan ciertos patrones, utilicé máscaras:
+
+```js
+.mask("<[1 1] 1 0 1>/16".early(.5))
+```
+Esto evita que el ritmo sea repetitivo y hace que algunos sonidos aparezcan solo en momentos específicos.
+
+También incluí una visualización del patrón:
+
+```js
+._pianoroll({vertical:0, flipTime:0, fill:0, labels:1})
+```
+Esta herramienta ayuda a entender visualmente cómo se distribuyen los eventos musicales mientras la pieza se ejecuta.
+
+#### Capas de bajo
+El bajo se genera a partir de la progresión de acordes:
+
+```js
+chords.offset(-1).voicing().s("gm_acoustic_bass:1")
+.phaser(4).room(.5)
+```
+Esta capa proporciona profundidad y estabilidad.
+
+También añadí un segundo bajo con un carácter más electrónico:
+
+```js
+chords.offset(-2).voicing().s("gm_synth_bass_2:1")
+.phaser(4).room(.5).lpf(slider(452, 0, 1000))
+```
+En este caso, el filtro pasa-bajos está controlado por un slider, lo que permite modificar la intensidad del sonido durante la ejecución.
+
+#### Elementos melódicos
+Para reforzar la armonía, añadí una capa de piano eléctrico:
+
+```js
+n("<0!3 1*2>").set(chords).mode("root:g2")
+.voicing().s("gm_epiano2:1")
+```
+Este elemento sigue los acordes y funciona como acompañamiento melódico sin sobresalir demasiado.
+
+#### Textura sonora y variación
+Finalmente, incorporé una capa más experimental basada en los acordes:
+
+```js
+chords.n("[1 <4 3 <2 5>>*2](<3 5>,8)")
+  .anchor("g4").voicing()
+  .segment(4).clip(rand.range(.4,.8))
+  .room(.75).shape(.3).delay(.25)
+  .fm(sine.range(3,8).slow(8))
+  .lpf(sine.range(500,1000).slow(8)).lpq(5)
+  .rarely(ply("2")).chunk(4, fast(2))
+  .gain(perlin.range(.6, .9))
+  .mask("<0 1 1 0>/16")
+```
+Esta capa introduce variaciones constantes mediante efectos, cambios de volumen y activaciones poco frecuentes, lo que hace que la pieza no suene igual en cada repetición.
+
+#### Ajustes finales
+Para finalizar, apliqué pequeños retardos y ajustes globales:
+
+```js
+.late("[0 .01]*4").late("[0 .01]*2").size(4)
+```
+Estos ajustes ayudan a que el sonido no sea completamente rígido y aportan una sensación más orgánica al conjunto.
 
 ## Bitácora de reflexión
+
 
