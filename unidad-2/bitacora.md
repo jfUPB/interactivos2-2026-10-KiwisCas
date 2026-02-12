@@ -211,6 +211,8 @@ Para el código en strudel haz clic [aquí](https://strudel.cc/#CgpzYW1wbGVzKCdn
 
 ## Bitácora de reflexión
 
+<img width="1423" height="721" alt="image" src="https://github.com/user-attachments/assets/14cce600-96d7-4420-a0c5-54e00c60058c" />
+
 
 
 
