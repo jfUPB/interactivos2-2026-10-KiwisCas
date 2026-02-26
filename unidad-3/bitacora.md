@@ -10,9 +10,9 @@ const osc = require('node-osc');
 // 1. CONFIGURACIÓN
 const STRUDEL_PORT = 8080;   // Donde Strudel envía los datos
 const P5JS_PORT = 8081;      // Donde p5.js escuchará
-const OSC_PORT = 9000;
 //const SC_PORT = 57120;       // Puerto de SuperCollider (SuperDirt)
 const SC_HOST = '127.0.0.1';
+const RELAY_PORT = 8082;
 
 // 2. CLIENTE OSC (Para enviar sonido a SuperCollider)
 //const oscClient = new osc.Client(SC_HOST, SC_PORT);
@@ -23,30 +23,34 @@ const wssStrudel = new WebSocket.Server({ port: STRUDEL_PORT });
 // 4. SERVIDOR WEBSOCKET PARA P5.JS (Puerto 8081)
 const wssP5 = new WebSocket.Server({ port: P5JS_PORT });
 
+const relayClient = new WebSocket(`ws://localhost:${RELAY_PORT}`);
+
+relayClient.on('open', () => {
+    console.log('🔗 Conectado a relay OSC (Open Stage)');
+});
+
+relayClient.on('message', (message) => {
+    try {
+        const msg = JSON.parse(message.toString());
+
+        // reenviar a p5
+        const payload = JSON.stringify(msg);
+
+        wssP5.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(payload);
+            }
+        });
+
+    } catch (e) {
+        console.error('Error procesando mensaje del relay:', e);
+    }
+});
+
 console.log(`🚀 Super Bridge Iniciado`);
 console.log(`- Escuchando a Strudel en ws://localhost:${STRUDEL_PORT}`);
 console.log(`- Transmitiendo a p5.js en ws://localhost:${P5JS_PORT}`);
-console.log(`- Escuchando a OpenStageControl en ws:localhost:${OSC_PORT}`);
 //console.log(`- Enviando audio a SuperCollider en ${SC_HOST}:${SC_PORT}`);
-
-const udpPort = new osc.UDPPort({
-    localAddress: "0.0.0.0",
-    localPort: OSC_PORT
-});
-udpPort.open();
-
-udpPort.on("message", (msg, timeTag, info) => {
-    const payload = {
-        address: msg.address,
-        args: msg.args || [],
-        tiemestamp: Date.now()
-    };
-    broadcasstToP5(payload);
-
-    console.log("Osc Recibido:", msg.address);
-});
-
-
 
 wssStrudel.on('connection', (ws) => {
     console.log('✅ Strudel conectado al Bridge');
@@ -80,17 +84,10 @@ wssStrudel.on('connection', (ws) => {
 
 wssP5.on('connection', (ws) => {
     console.log('🎨 p5.js se ha conectado al Bridge');
+
+
+    
 });
-
-function broadcasstToP5(msg) {
-    const payload = JSON.stringify(msg);
-
-    wssP5.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(payload);
-        }
-    });
-}
 ```
 
 ### VisualesMin Actualzado
@@ -595,5 +592,6 @@ wssP5.on('connection', (ws) => {
 
 
 ## Bitácora de reflexión
+
 
 
