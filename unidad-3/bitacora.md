@@ -5,7 +5,7 @@
 ### Bridge.js
 ```js
 const WebSocket = require('ws');
-const osc = require('osc');
+const osc = require('node-osc');
 
 // 1. CONFIGURACIÓN
 const STRUDEL_PORT = 8080;   // Donde Strudel envía los datos
@@ -595,4 +595,5 @@ wssP5.on('connection', (ws) => {
 
 
 ## Bitácora de reflexión
+
 
