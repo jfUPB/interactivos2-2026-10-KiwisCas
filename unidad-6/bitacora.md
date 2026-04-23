@@ -160,4 +160,31 @@ $: stack(
 Instrucciones paso a paso para reproducir tu obra hasta este punto.
 
 
+el proceso es bastante sencillo, inicialmente recomiendo para mi proceso utilizar la instalación locar de strudel, pero recordar que una vez se instale utilzar los comandos 
+```bash
+npm install
+npm dev
+```
+
+luego de esto se debe de abrir otra consola más y ejectuar el siguiente comando 
+```bash
+npm dev osc
+```
+
+esto va a hacer que el strudel empiece a enviar señales osc al sistema de touch sin mucha complicación, en caso de que las señales no se estén recibiendo en touch por favor revisa que el puerto si sea el adecuado y segundo, que el strudel si esté enviado OSC desde su propio sistema en la consola, en caso de que ninguna de ambas funcione, prueba borrar el puerto del operador OSC in de touch y volver a ponerlo
+
+
 ## Bitácora de reflexión
+
+
+### Evalúa la coherencia entre audio y visuales. ¿Se logra la experiencia deseada según tu concepto? ¿Qué ajustarías?
+me gusta la coherencia que tengo con mi audio en mis visuales, me parece que está bastante bien logradas en términos de estética, sin embargo, algo que no pude realizar bien es como las partículas van tomando forma progresivamente y es algo que me gustaría ajustar en el futuro
+
+### Actualiza el diagrama de sistema de tu obra incorporando la capa visual y su conexión con el audio.
+
+<img width="1027" height="754" alt="image" src="https://github.com/user-attachments/assets/76b9e497-f495-462c-9326-0db8b9bd7f1a" />
+
+---
+
+### Describe los principales desafíos de integración que enfrentaste y cómo los resolviste.
+Como tal no enfrenté muchos desafíos haciendo el tema de la integración de la forma que conozco, sin embargo, todavía sigo investigando el tema de como poder hacer la integración con los toxes que juanfer nos facilitó pero espero en aglún punto poder enviar los mensajes utilizando toxes y pudiendo así, resolver el problema de sicnronziación de una mejor forma .
