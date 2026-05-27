@@ -1,9 +1,3 @@
 # Unidad 8
-
-## Bitácora de proceso de aprendizaje
-
-
-## Bitácora de aplicación 
-
-
-## Bitácora de reflexión
+## Enlace al repositorio de GitHub con el README
+## [REPOSITORIO GITHUB](https://github.com/KiwisCas/VisualesInteractivasReactivas/tree/main)
